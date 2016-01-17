@@ -3,27 +3,24 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".Top"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".Administration"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/top_title"
-        android:text="@string/top_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp" />
-
+    <TextView android:text="@string/admin_title" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:textSize="20sp"/>
     <Button
-        android:id="@+id/top_inquiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/goto_inquiry"/>
-
+        android:text="@string/import_file"/>
     <Button
-        android:id="@+id/top_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
-        android:onClick="btnSetting_onClick"/>
+        android:text="@string/export_file"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/env_settings"
+        android:onClick="change_text_onClick"/>
 
 </LinearLayout>
