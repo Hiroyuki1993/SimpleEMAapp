@@ -20,7 +20,16 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/set_alarm"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/env_settings"
         android:onClick="change_text_onClick"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reflect"
+        android:onClick="reflect_onClick"/>
 
 </LinearLayout>

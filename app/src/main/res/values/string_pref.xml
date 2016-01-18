@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="text_change">Current size:-</string>
+    <string name="text_change">Chose text size</string>
     <string name="text_change_title">Text Size</string>
     <string-array name="text_sizes">
         <item>Micro</item>

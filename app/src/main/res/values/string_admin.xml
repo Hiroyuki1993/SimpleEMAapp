@@ -3,5 +3,7 @@
     <string name="admin_title">Administration page</string>
     <string name="import_file">Import inquiry file</string>
     <string name="export_file">Export answers</string>
+    <string name="set_alarm">Set alarm</string>
     <string name="env_settings">Environment settings</string>
+    <string name="reflect">Reflect changes</string>
 </resources>

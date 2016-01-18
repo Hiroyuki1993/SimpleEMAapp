@@ -40,4 +40,8 @@ public class Administration extends ActionBarActivity {
         Intent i = new Intent(this, MyConfig.class);
         startActivity(i);
     }
+    public void reflect_onClick(View v){
+        Intent i = new Intent(this, Top.class);
+        startActivity(i);
+    }
 }
