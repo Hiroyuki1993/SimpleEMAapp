@@ -12,7 +12,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/import_file"/>
+        android:text="@string/import_file"
+        android:onClick="read_file_onClick"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

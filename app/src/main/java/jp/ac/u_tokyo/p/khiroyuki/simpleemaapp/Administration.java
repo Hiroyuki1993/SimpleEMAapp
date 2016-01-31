@@ -36,6 +36,10 @@ public class Administration extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    public void read_file_onClick(View v){
+        Intent i = new Intent(this, ReadInquiryFile.class);
+        startActivity(i);
+    }
     public void change_text_onClick(View v){
         Intent i = new Intent(this, MyConfig.class);
         startActivity(i);
