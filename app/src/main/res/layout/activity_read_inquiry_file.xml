@@ -14,5 +14,13 @@
         android:layout_height="wrap_content"
         android:text="@string/read_file"
         android:onClick="btn_ChoseFile"/>
+    <TextView android:text="@string/file_path" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:id="@+id/txt_file_path"/>
+    <Button
+        android:id="@+id/import_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/import_this_file"
+        android:onClick="btn_importFile"/>
 
 </LinearLayout>
