@@ -2,7 +2,6 @@ package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +12,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
-public class ReadInquiryFile extends ActionBarActivity {
+public class ReadInquiryFile extends CommonActivity {
     private String fpath;
 
     @Override

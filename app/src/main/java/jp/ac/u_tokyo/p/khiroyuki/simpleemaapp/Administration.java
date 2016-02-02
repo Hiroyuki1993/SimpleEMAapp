@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class Administration extends ActionBarActivity {
+public class Administration extends CommonActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
