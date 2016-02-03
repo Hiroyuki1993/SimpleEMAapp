@@ -1,5 +1,6 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
+import android.app.AlertDialog;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ReadInquiryFile extends CommonActivity {
-    private String fpath;
+    private String fpath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,12 @@ public class ReadInquiryFile extends CommonActivity {
 
     public void btn_importFile(View v) throws FileNotFoundException, XmlPullParserException {
         ReadXMLFile data = new ReadXMLFile(fpath);
+        String errMsg = data.errMsg(this);
+        if(!errMsg.isEmpty()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(errMsg).setMessage(errMsg).show();
+            return;
+        }
         /*if(WriteDatabase(data)){
             Allart("success")
         }*/

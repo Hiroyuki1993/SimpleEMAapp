@@ -1,6 +1,6 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -18,12 +18,19 @@ import java.util.HashMap;
 public class ReadXMLFile {
 
     private static String qList[] = {"parent", "hq", "type", "order", "desc", "min", "max"};
-
+    private String errMsg;
+    private boolean pathEmpty = false;
+    private boolean imperfect = false;
     private ArrayList<String> roots = new ArrayList<>();
     private ArrayList<HashMap> questions = new ArrayList<>();
-    private ArrayList<ArrayList<String>> items = new ArrayList<>();
+    private HashMap<String, ArrayList<String>> items = new HashMap<>();
 
     public ReadXMLFile(String path) throws XmlPullParserException, FileNotFoundException {
+        if(path.isEmpty()){
+            pathEmpty = true;
+            return;
+        }
+
         InputStream stream = new BufferedInputStream(new FileInputStream(path));
 
         try {
@@ -41,6 +48,10 @@ public class ReadXMLFile {
                     for(e = myparser.getEventType();
                         e != XmlPullParser.END_TAG || !myparser.getName().equals("question");
                         e = myparser.next()){
+                        if(e == XmlPullParser.END_DOCUMENT){
+                            imperfect = true;
+                            break;
+                        }
                         String qTag = myparser.getName();
                         if(e == XmlPullParser.START_TAG){
                             for(String list:qList){
@@ -49,30 +60,112 @@ public class ReadXMLFile {
                                 }
                             }
                             if(qTag.equals("items")){
-                                item.add(itemId);
                                 question.put("id",itemId);
                                 for(e = myparser.getEventType();
                                     e != XmlPullParser.END_TAG || !myparser.getName().equals("items");
                                     e = myparser.next()){
-                                    String iTag = myparser.getName();
+                                    if (e == XmlPullParser.END_DOCUMENT){
+                                        imperfect = true;
+                                        break;
+                                    }
                                     if (e == XmlPullParser.START_TAG && myparser.getName().equals("item")){
                                         item.add(myparser.nextText());
                                     }
                                 }
-                                items.add(item);
+                                items.put(itemId, item);
                             }
                         }
                     }
                     questions.add(question);
                 }
             }
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
         Log.d("roots",roots.toString());
         Log.d("questions",questions.toString());
         Log.d("items",items.toString());
+    }
+
+    public String errMsg(Context c){
+        if(pathEmpty){
+            errMsg = c.getResources().getString(R.string.path_null_warn);
+        } else if (imperfect){
+            errMsg = c.getResources().getString(R.string.imperfectInq);
+        } else if (roots.isEmpty()){
+            errMsg = c.getResources().getString(R.string.root_item_err);
+        } else {
+            switch (QuestionValid()){
+                case 0:break;
+                case 1:
+                    errMsg = c.getResources().getString(R.string.q_item_null);
+                    break;
+                case 2:
+                    errMsg = c.getResources().getString(R.string.qIdErr);
+                    break;
+                case 3:
+                    errMsg = c.getResources().getString(R.string.qParentErr);
+                    break;
+                case 4:
+                    errMsg = c.getResources().getString(R.string.qTypeErr);
+                    break;
+                case 5:
+                    errMsg = c.getResources().getString(R.string.qOrderErr);
+                    break;
+                case 6:
+                    errMsg = c.getResources().getString(R.string.qItemErr);
+                    break;
+            }
+        }
+        return errMsg;
+    }
+
+    private int QuestionValid(){
+        int errType = 0;
+        if(questions.isEmpty()){
+            errType = 1;
+        } else {
+            for(HashMap q:questions){
+                if(!q.containsKey("id")){
+                    errType=2;
+                    break;
+                } else if (q.get("id").toString().isEmpty()){
+                    errType=2;
+                    break;
+                }
+                if(!q.containsKey("parent")){
+                    errType=3;
+                    break;
+                } else if (q.get("parent").toString().isEmpty()){
+                    errType=3;
+                    break;
+                }
+                if(!q.containsKey("type")){
+                    errType=4;
+                    break;
+                } else if (q.get("type").toString().isEmpty()){
+                    errType=4;
+                    break;
+                }
+                if(!q.containsKey("order")){
+                    errType=5;
+                    break;
+                } else if (q.get("order").toString().isEmpty()){
+                    errType=5;
+                    break;
+                }
+                if (q.get("type").toString().equals("radio")){
+                    if(!items.containsKey(q.get("id"))){
+                        errType=6;
+                        break;
+                    } else if (items.get(q.get("id")).isEmpty()){
+                        errType=6;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return errType;
     }
 }

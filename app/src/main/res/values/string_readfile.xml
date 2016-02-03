@@ -4,4 +4,13 @@
     <string name="read_file">Chose your inquiry file</string>
     <string name="file_path">File Path:</string>
     <string name="import_this_file">Import this file</string>
+    <string name="path_null_warn">File path is empty!</string>
+    <string name="root_item_err">Root items were not found!\n At least one root tag is required.</string>
+    <string name="q_item_null">Question items were not found!\n At least one question tag is required.</string>
+    <string name="qIdErr">There is no id in a question tag!</string>
+    <string name="qParentErr">Ther is no parent in a question tag!</string>
+    <string name="qTypeErr">Please assign a question type!</string>
+    <string name="qOrderErr">Please assign a question order!</string>
+    <string name="qItemErr">Radio type question require at least one item.</string>
+    <string name="imperfectInq">Imperfect inquiry file!\nRead the manual about how to create the EMA inquiry file.</string>
 </resources>
