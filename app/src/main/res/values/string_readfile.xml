@@ -13,4 +13,5 @@
     <string name="qOrderErr">Please assign a question order!</string>
     <string name="qItemErr">Radio type question require at least one item.</string>
     <string name="imperfectInq">Imperfect inquiry file!\nRead the manual about how to create the EMA inquiry file.</string>
+    <string name="hq_err">A question need a title!</string>
 </resources>

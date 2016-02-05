@@ -16,11 +16,14 @@ import java.io.FileNotFoundException;
 
 public class ReadInquiryFile extends CommonActivity {
     private String fpath = "";
+    private DatabaseHelper helper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_inquiry_file);
+
+        helper = new DatabaseHelper(this);
     }
 
     @Override
@@ -91,8 +94,8 @@ public class ReadInquiryFile extends CommonActivity {
             builder.setTitle(errMsg).setMessage(errMsg).show();
             return;
         }
-        /*if(WriteDatabase(data)){
-            Allart("success")
-        }*/
+        if(!helper.WriteInq(data)){
+
+        }
     }
 }

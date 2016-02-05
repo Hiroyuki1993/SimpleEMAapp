@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,7 +24,7 @@ public class ReadXMLFile {
     private boolean imperfect = false;
     private ArrayList<String> roots = new ArrayList<>();
     private ArrayList<HashMap> questions = new ArrayList<>();
-    private HashMap<String, ArrayList<String>> items = new HashMap<>();
+    private ArrayList<String[]> items = new ArrayList<>();
 
     public ReadXMLFile(String path) throws XmlPullParserException, FileNotFoundException {
         if(path.isEmpty()){
@@ -44,7 +45,6 @@ public class ReadXMLFile {
                 if(e == XmlPullParser.START_TAG && myparser.getName().equals("question")){
                     String itemId = myparser.getAttributeValue(null,"id");
                     HashMap<String,String> question = new HashMap<>();
-                    ArrayList<String> item = new ArrayList<>();
                     for(e = myparser.getEventType();
                         e != XmlPullParser.END_TAG || !myparser.getName().equals("question");
                         e = myparser.next()){
@@ -60,7 +60,7 @@ public class ReadXMLFile {
                                 }
                             }
                             if(qTag.equals("items")){
-                                question.put("id",itemId);
+                                question.put("id", itemId);
                                 for(e = myparser.getEventType();
                                     e != XmlPullParser.END_TAG || !myparser.getName().equals("items");
                                     e = myparser.next()){
@@ -69,10 +69,12 @@ public class ReadXMLFile {
                                         break;
                                     }
                                     if (e == XmlPullParser.START_TAG && myparser.getName().equals("item")){
-                                        item.add(myparser.nextText());
+                                        String[] item = new String[2];
+                                        item[0] = itemId;
+                                        item[1] = myparser.nextText();
+                                        items.add(item.clone());
                                     }
                                 }
-                                items.put(itemId, item);
                             }
                         }
                     }
@@ -115,6 +117,9 @@ public class ReadXMLFile {
                 case 6:
                     errMsg = c.getResources().getString(R.string.qItemErr);
                     break;
+                case 7:
+                    errMsg = c.getResources().getString(R.string.hq_err);
+                    break;
             }
         }
         return errMsg;
@@ -131,6 +136,10 @@ public class ReadXMLFile {
                     break;
                 } else if (q.get("id").toString().isEmpty()){
                     errType=2;
+                    break;
+                }
+                if(!q.containsKey("hq")){
+                    errType=7;
                     break;
                 }
                 if(!q.containsKey("parent")){
@@ -154,7 +163,7 @@ public class ReadXMLFile {
                     errType=5;
                     break;
                 }
-                if (q.get("type").toString().equals("radio")){
+                /*if (q.get("type").toString().equals("radio")){
                     if(!items.containsKey(q.get("id"))){
                         errType=6;
                         break;
@@ -162,10 +171,20 @@ public class ReadXMLFile {
                         errType=6;
                         break;
                     }
-                }
+                }*/
             }
         }
 
         return errType;
+    }
+
+    public String[] returnRoots(){
+        return roots.toArray(new String[0]);
+    }
+    public HashMap[] returnQuestions(){
+        return questions.toArray(new HashMap[0]);
+    }
+    public ArrayList<String[]> returnItems() {
+        return items;
     }
 }
