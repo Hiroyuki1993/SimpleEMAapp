@@ -8,10 +8,18 @@
     <string name="root_item_err">Root items were not found!\n At least one root tag is required.</string>
     <string name="q_item_null">Question items were not found!\n At least one question tag is required.</string>
     <string name="qIdErr">There is no id in a question tag!</string>
-    <string name="qParentErr">Ther is no parent in a question tag!</string>
+    <string name="qParentErr">There is no parent in a question tag!</string>
     <string name="qTypeErr">Please assign a question type!</string>
     <string name="qOrderErr">Please assign a question order!</string>
     <string name="qItemErr">Radio type question require at least one item.</string>
     <string name="imperfectInq">Imperfect inquiry file!\nRead the manual about how to create the EMA inquiry file.</string>
     <string name="hq_err">A question need a title!</string>
+    <string name="writing_roots">An error was occurred when writing root items</string>
+    <string name="writing_q">An error was occurred when writing questions</string>
+    <string name="writing_items">An error was occurred when writing items</string>
+    <string name="warning">Warning!</string>
+    <string name="read_warning">Previous inquiry you had set is to be deleted.</string>
+    <string name="Yes">Yes</string>
+    <string name="Cancel">Cancel</string>
+    <string name="read_success">Your inquiry file has been successfully loaded!</string>
 </resources>

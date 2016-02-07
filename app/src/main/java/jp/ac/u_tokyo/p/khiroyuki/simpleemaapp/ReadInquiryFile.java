@@ -1,6 +1,7 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -87,6 +88,29 @@ public class ReadInquiryFile extends CommonActivity {
     }
 
     public void btn_importFile(View v) throws FileNotFoundException, XmlPullParserException {
+        AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+        confirm.setTitle(R.string.warning)
+                .setMessage(R.string.read_warning)
+                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            importFile();
+                        } catch (FileNotFoundException | XmlPullParserException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();
+
+
+    }
+
+    public void importFile() throws FileNotFoundException, XmlPullParserException {
         ReadXMLFile data = new ReadXMLFile(fpath);
         String errMsg = data.errMsg(this);
         if(!errMsg.isEmpty()){
@@ -94,8 +118,13 @@ public class ReadInquiryFile extends CommonActivity {
             builder.setTitle(errMsg).setMessage(errMsg).show();
             return;
         }
-        if(!helper.WriteInq(data)){
-
+        helper.initTable();
+        if(!helper.WriteInq(data, this)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(helper.errMsg).setMessage(helper.errMsg).show();
+            return;
         }
+        AlertDialog.Builder success_loaded = new AlertDialog.Builder(this);
+        success_loaded.setTitle(R.string.read_success).setMessage(R.string.read_success);
     }
 }

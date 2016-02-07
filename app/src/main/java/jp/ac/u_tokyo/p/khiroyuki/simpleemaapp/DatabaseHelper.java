@@ -26,13 +26,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL("CREATE TABLE RootItem (_id INTEGER PRIMARY KEY AUTOINCREMENT, rootName TEXT NOT NULL)");
-        db.execSQL("CREATE TABLE Questions (_id INTEGER PRIMARY KEY AUTOINCREMENT, parent INTEGER NOT NULL, hq TEXT NULL, type INTEGER NOT NULL, order INTEGER NOT NULL, desc TEXT, max TEXT, min TEXT, itemId TEXT)");
+        db.execSQL("CREATE TABLE Questions (_id INTEGER PRIMARY KEY AUTOINCREMENT, parent INTEGER NOT NULL, hq TEXT NULL, QType INTEGER NOT NULL, QOrder INTEGER NOT NULL, QDesc TEXT, QMax TEXT, QMin TEXT, itemId TEXT)");
         db.execSQL("CREATE TABLE Items (_id INTEGER PRIMARY KEY AUTOINCREMENT, questionId INTEGER NOT NULL, itemName TEXT NOT NULL)");
-        db.execSQL("CREATE TABLE Types (_id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL");
+        db.execSQL("CREATE TABLE Types (_id INTEGER PRIMARY KEY AUTOINCREMENT, TType TEXT NOT NULL)");
 
-        db.execSQL("INSERT INTO Types (type) VALUES ('radio')");
-        db.execSQL("INSERT INTO Types (type) VALUES ('seek')");
-        db.execSQL("INSERT INTO Types (type) VALUES ('time')");
+        db.execSQL("INSERT INTO Types (TType) VALUES ('radio')");
+        db.execSQL("INSERT INTO Types (TType) VALUES ('seek')");
+        db.execSQL("INSERT INTO Types (TType) VALUES ('time')");
     }
 
     @Override
@@ -44,56 +44,86 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public boolean WriteInq(ReadXMLFile data){
+    public boolean WriteInq(ReadXMLFile data, Context c){
         SQLiteDatabase db = getWritableDatabase();
-        if(db.insert("RootItem", null, setRoots(data.returnRoots())) != -1){
-            if(db.insert("Questions", null, setQuestions(data.returnQuestions())) != -1){
-                db.insert("Items", null, setItems(data.returnItems()));
-            }
-        }
+        if(setRoots(data.returnRoots(), db)){
+            if(setQuestions(data.returnQuestions(), db)){
+                if(!setItems(data.returnItems(), db)){
+                    errMsg = c.getResources().getString(R.string.writing_items);
+                }
+            } else errMsg = c.getResources().getString(R.string.writing_q);
+        } else errMsg = c.getResources().getString(R.string.writing_roots);
         return true;
     }
 
-    public ContentValues setRoots(String[] roots){
-        ContentValues cv = new ContentValues();
+    public Boolean setRoots(String[] roots, SQLiteDatabase db){
+        Boolean dbSuccess = true;
         for (String root:roots){
+            ContentValues cv = new ContentValues();
             cv.put("rootName", root);
+            if(db.insert("RootItem", null, cv) == -1){
+                dbSuccess = false;
+                break;
+            }
         }
-        return cv;
+        return dbSuccess;
     }
 
-    public ContentValues setQuestions(HashMap[] qs){
+    public Boolean setQuestions(HashMap[] qs, SQLiteDatabase db){
         SQLiteDatabase rdb = getReadableDatabase();
-        ContentValues cv = new ContentValues();
+        Boolean dbSuccess = true;
         for (HashMap q:qs){
-            Cursor parentCursor = rdb.query("rootName", new String[]{"_id"}, "rootName", new String[]{q.get("parent").toString()}, null, null, null, null);
+            ContentValues cv = new ContentValues();
+            Cursor parentCursor = rdb.query("rootItem", new String[]{"_id"}, "rootName = ?", new String[]{q.get("parent").toString()}, null, null, null, null);
             if(parentCursor.moveToFirst()){
                 cv.put("parent",parentCursor.getInt(0));
             }
             cv.put("hq", q.get("hq").toString());
-            Cursor typeCursor = rdb.query("Types", new String[]{"_id"}, "type", new String[]{q.get("type").toString()}, null, null, null, null);
+            Cursor typeCursor = rdb.query("Types", new String[]{"_id"}, "TType = ?", new String[]{q.get("type").toString()}, null, null, null, null);
             if(typeCursor.moveToFirst()){
-                cv.put("type",parentCursor.getInt(0));
+                cv.put("QType", typeCursor.getInt(0));
             }
-            cv.put("order", Integer.parseInt(q.get("order").toString()));
-            cv.put("desc", q.get("desc").toString());
-            cv.put("max", q.get("max").toString());
-            cv.put("min", q.get("min").toString());
+            cv.put("QOrder", Integer.parseInt(q.get("order").toString()));
+            cv.put("QDesc", q.get("desc").toString());
+            cv.put("QMax", q.get("max").toString());
+            cv.put("QMin", q.get("min").toString());
             cv.put("itemId", q.get("id").toString());
+            if(db.insert("Questions", null, cv) == -1){
+                dbSuccess = false;
+                break;
+            }
+            parentCursor.close();
+            typeCursor.close();
         }
-        return cv;
+        return dbSuccess;
     }
 
-    public ContentValues setItems(ArrayList<String[]> items){
+    public Boolean setItems(ArrayList<String[]> items, SQLiteDatabase db){
+        Boolean dbSuccess = true;
         SQLiteDatabase rdb = getReadableDatabase();
         ContentValues cv = new ContentValues();
         for (String[] item:items){
-            Cursor parentCursor = rdb.query("Questions", new String[]{"_id"}, "itemId", new String[]{item[0]}, null, null, null, null);
+            Cursor parentCursor = rdb.query("Questions", new String[]{"_id"}, "itemId = ?", new String[]{item[0]}, null, null, null, null);
             if(parentCursor.moveToFirst()){
                 cv.put("questionId",parentCursor.getInt(0));
             }
             cv.put("itemName", item[1]);
+            if(db.insert("Items", null, cv) == -1){
+                dbSuccess = false;
+                break;
+            }
+            parentCursor.close();
         }
-        return cv;
+        return dbSuccess;
+    }
+
+    public void initTable(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("RootItem", null, null);
+        db.delete("Questions", null, null);
+        db.delete("Items", null, null);
+        db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'RootItem'");
+        db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'Questions'");
+        db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'Items'");
     }
 }

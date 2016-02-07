@@ -1,7 +1,6 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -12,14 +11,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ReadXMLFile {
 
     private static String qList[] = {"parent", "hq", "type", "order", "desc", "min", "max"};
-    private String errMsg;
+    private String errMsg = "";
     private boolean pathEmpty = false;
     private boolean imperfect = false;
     private ArrayList<String> roots = new ArrayList<>();
@@ -44,7 +42,16 @@ public class ReadXMLFile {
                 }
                 if(e == XmlPullParser.START_TAG && myparser.getName().equals("question")){
                     String itemId = myparser.getAttributeValue(null,"id");
-                    HashMap<String,String> question = new HashMap<>();
+                    HashMap<String,String> question = new HashMap<String,String>(){
+                        {put("id","");}
+                        {put("hq","");}
+                        {put("type", "");}
+                        {put("order","");}
+                        {put("desc","");}
+                        {put("min","");}
+                        {put("max","");}
+                    };
+                    question.put("id", itemId);
                     for(e = myparser.getEventType();
                         e != XmlPullParser.END_TAG || !myparser.getName().equals("question");
                         e = myparser.next()){
@@ -60,7 +67,6 @@ public class ReadXMLFile {
                                 }
                             }
                             if(qTag.equals("items")){
-                                question.put("id", itemId);
                                 for(e = myparser.getEventType();
                                     e != XmlPullParser.END_TAG || !myparser.getName().equals("items");
                                     e = myparser.next()){
@@ -84,9 +90,6 @@ public class ReadXMLFile {
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
-        Log.d("roots",roots.toString());
-        Log.d("questions",questions.toString());
-        Log.d("items",items.toString());
     }
 
     public String errMsg(Context c){
@@ -120,6 +123,8 @@ public class ReadXMLFile {
                 case 7:
                     errMsg = c.getResources().getString(R.string.hq_err);
                     break;
+                default:
+                    break;
             }
         }
         return errMsg;
@@ -135,7 +140,7 @@ public class ReadXMLFile {
                     errType=2;
                     break;
                 } else if (q.get("id").toString().isEmpty()){
-                    errType=2;
+                    errType=3;
                     break;
                 }
                 if(!q.containsKey("hq")){
@@ -179,10 +184,10 @@ public class ReadXMLFile {
     }
 
     public String[] returnRoots(){
-        return roots.toArray(new String[0]);
+        return roots.toArray(new String[roots.size()]);
     }
     public HashMap[] returnQuestions(){
-        return questions.toArray(new HashMap[0]);
+        return questions.toArray(new HashMap[questions.size()]);
     }
     public ArrayList<String[]> returnItems() {
         return items;
