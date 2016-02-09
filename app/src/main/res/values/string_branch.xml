@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="branch_title">Chose inquiry type</string>
+    <string name="no_root_err">There are any root items in the inquiry.\nPlease load a inquiry file correctly.</string>
+</resources>

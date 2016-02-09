@@ -106,8 +106,6 @@ public class ReadInquiryFile extends CommonActivity {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 }).show();
-
-
     }
 
     public void importFile() throws FileNotFoundException, XmlPullParserException {

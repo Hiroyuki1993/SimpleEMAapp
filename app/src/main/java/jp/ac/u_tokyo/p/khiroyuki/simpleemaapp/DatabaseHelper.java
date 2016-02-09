@@ -12,6 +12,8 @@ import java.util.HashMap;
 public class DatabaseHelper extends SQLiteOpenHelper{
     static final private String DBNAME = "ema.sqlite";
     static final private int VERSION = 1;
+    private ArrayList<String> rootItem = new ArrayList<>();
+    private ArrayList<Integer> rootId = new ArrayList<>();
     public String errMsg;
 
     public DatabaseHelper(Context context){
@@ -125,5 +127,31 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'RootItem'");
         db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'Questions'");
         db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'Items'");
+    }
+
+    public boolean getRootItems(Context c){
+        SQLiteDatabase db = getReadableDatabase();
+        String[] cols = {"_id","rootName"};
+        Cursor cs = db.query("RootItem", cols, null, null, null, null, null, null);
+        if (cs.moveToFirst()){
+            do {
+                rootId.add(cs.getInt(0));
+                rootItem.add(cs.getString(1));
+            } while (cs.moveToNext());
+            cs.close();
+            db.close();
+        } else {
+            errMsg = c.getResources().getString(R.string.no_root_err);
+            return false;
+        }
+        return true;
+    }
+
+    public String[] returnRootItem(){
+        return rootItem.toArray(new String[rootItem.size()]);
+    }
+
+    public Integer[] returnRootId() {
+        return rootId.toArray(new Integer[rootId.size()]);
     }
 }
