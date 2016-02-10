@@ -66,12 +66,15 @@ public class Branching extends CommonActivity {
             errMsg = helper.errMsg;
             return false;
         }
-        for (String rootItem:helper.returnRootItem()){
-            buttonId.add(getResources().getIdentifier(BUTTON_ID + rootItem, "id", "jp.ac.u_tokyo.p.k_hiroyuki.simpleemaapp"));
+        for (int i = 0; i < helper.returnRootItem().length; i++){
+            String[] rootItem = helper.returnRootItem();
+            Integer[] rootId = helper.returnRootId();
+            buttonId.add(getResources().getIdentifier(BUTTON_ID + rootItem[i], "id", "jp.ac.u_tokyo.p.k_hiroyuki.simpleemaapp"));
             Button bt = new Button(this);
             bt.setId(buttonId.get(buttonId.size()-1));
-            bt.setText(rootItem);
+            bt.setText(rootItem[i]);
             bt.setTextSize(DynamicTextSize.dynamicTextSizeChange(this));
+            bt.setTag(rootId[i]);
             ll.addView(bt);
             findViewById(buttonId.get(buttonId.size()-1)).setOnClickListener(mOnClickListener);
         }
@@ -81,8 +84,14 @@ public class Branching extends CommonActivity {
     public View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                default:break;
+            for(int id:buttonId){
+                if(v.getId() == id){
+                    Intent i = new Intent(getApplicationContext(), Question.class);
+                    i.putExtra("questionType", Integer.parseInt(v.getTag().toString()));
+                    int index = 0;
+                    i.putExtra("questionIndex", index);
+                    startActivity(i);
+                }
             }
         }
     };
