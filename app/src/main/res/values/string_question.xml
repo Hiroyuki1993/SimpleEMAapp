@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_questions">This category does not have any questions!</string>
+    <string name="unknown_qType">Unknown question type.\nInquiry file may be incorrect.</string>
+    <string name="item_not_found">Choice is not found</string>
+    <string name="receive_intent_err">Failed to receive previous data.</string>
+    <string name="error">Error</string>
+</resources>

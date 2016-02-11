@@ -1,5 +1,7 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +14,26 @@ public class Question extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
-        DatabaseHelper helper = new DatabaseHelper(this);
+        Intent i = this.getIntent();
+        int parentId = i.getIntExtra("questionType", -1);
+        int index = i.getIntExtra("questionIndex", -1);
+        if (parentId < 0 || index < 0){
+            returnTop(R.string.receive_intent_err);
+        }
+        SearchTheQuestion theQ = new SearchTheQuestion(this);
+        if(!theQ.SearchQ(parentId, index)){
+            if(theQ.endOfQuestion){
+                Intent end_intent = new Intent(this, EndOfQuestion.class);
+                startActivity(end_intent);
+            } else {
+                returnTop(theQ.errMsg);
+            }
+        }
+        if (theQ.qType.equals("radio")){
+            if(!theQ.getQitem(theQ.qid)){
+                returnTop(theQ.errMsg);
+            }
+        }
     }
 
     @Override
@@ -35,5 +56,13 @@ public class Question extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void returnTop(int Rid){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error)
+        .setMessage(Rid).show();
+        Intent i = new Intent(this, Top.class);
+        startActivity(i);
     }
 }

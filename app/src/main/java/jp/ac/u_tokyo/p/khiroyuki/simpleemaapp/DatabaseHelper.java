@@ -154,8 +154,4 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public Integer[] returnRootId() {
         return rootId.toArray(new Integer[rootId.size()]);
     }
-
-    public boolean searchTheQuestion(int type, int index){
-        return true;
-    }
 }
