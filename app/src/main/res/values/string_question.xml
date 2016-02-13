@@ -5,4 +5,5 @@
     <string name="item_not_found">Choice is not found</string>
     <string name="receive_intent_err">Failed to receive previous data.</string>
     <string name="error">Error</string>
+    <string name="next">Next</string>
 </resources>

@@ -6,8 +6,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class Question extends ActionBarActivity {
+    private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
+    private String answer;
+    private int parentId;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,8 +28,8 @@ public class Question extends ActionBarActivity {
         setContentView(R.layout.activity_question);
 
         Intent i = this.getIntent();
-        int parentId = i.getIntExtra("questionType", -1);
-        int index = i.getIntExtra("questionIndex", -1);
+        parentId = i.getIntExtra("questionType", -1);
+        index = i.getIntExtra("questionIndex", -1);
         if (parentId < 0 || index < 0){
             returnTop(R.string.receive_intent_err);
         }
@@ -33,6 +46,7 @@ public class Question extends ActionBarActivity {
             if(!theQ.getQitem(theQ.qid)){
                 returnTop(theQ.errMsg);
             }
+            makeRadio(theQ);
         }
     }
 
@@ -64,5 +78,44 @@ public class Question extends ActionBarActivity {
         .setMessage(Rid).show();
         Intent i = new Intent(this, Top.class);
         startActivity(i);
+    }
+
+    public void makeRadio(SearchTheQuestion theQ){
+        LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
+
+        TextView qHeader = (TextView)findViewById(R.id.hq);
+        qHeader.setText(theQ.hq);
+        qHeader.setTextSize(DynamicTextSize.dynamicTextSizeChange(this));
+
+        TextView qDesc = (TextView)findViewById(R.id.desc);
+        qDesc.setText(theQ.desc);
+        qDesc.setTextSize(DynamicTextSize.dynamicTextSizeChange(this));
+
+        ListView itemList = new ListView(this);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, theQ.items){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView view = (TextView)super.getView(position, convertView, parent);
+                view.setTextSize(DynamicTextSize.dynamicTextSizeChange(getApplicationContext()));
+                return view;
+            }
+        };
+        itemList.setAdapter(adapter);
+        itemList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                answer = ((TextView) view).getText().toString();
+            }
+        });
+        layout.addView(itemList, 2, new LinearLayout.LayoutParams(MP, WC));
+    }
+
+    public void btnNext_onClick(View view){
+        Intent intent = new Intent(getApplicationContext(), Question.class);
+        intent.putExtra("questionType", parentId);
+        index++;
+        intent.putExtra("questionIndex", index);
+        startActivity(intent);
     }
 }
