@@ -13,7 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class Question extends ActionBarActivity {
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -42,11 +44,22 @@ public class Question extends ActionBarActivity {
                 returnTop(theQ.errMsg);
             }
         }
-        if (theQ.qType.equals("radio")){
-            if(!theQ.getQitem(theQ.qid)){
-                returnTop(theQ.errMsg);
-            }
-            makeRadio(theQ);
+
+        setTitle(theQ);
+
+        switch (theQ.qType) {
+            case "radio":
+                if (!theQ.getQitem(theQ.qid)) {
+                    returnTop(theQ.errMsg);
+                }
+                makeRadio(theQ);
+                break;
+            case "seek":
+                makeSeek(theQ);
+                break;
+            case "time":
+                makeTimePicker();
+                break;
         }
     }
 
@@ -80,9 +93,7 @@ public class Question extends ActionBarActivity {
         startActivity(i);
     }
 
-    public void makeRadio(SearchTheQuestion theQ){
-        LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
-
+    public void setTitle(SearchTheQuestion theQ) {
         TextView qHeader = (TextView)findViewById(R.id.hq);
         qHeader.setText(theQ.hq);
         qHeader.setTextSize(DynamicTextSize.dynamicTextSizeChange(this));
@@ -90,6 +101,10 @@ public class Question extends ActionBarActivity {
         TextView qDesc = (TextView)findViewById(R.id.desc);
         qDesc.setText(theQ.desc);
         qDesc.setTextSize(DynamicTextSize.dynamicTextSizeChange(this));
+    }
+
+    public void makeRadio(SearchTheQuestion theQ){
+        LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
 
         ListView itemList = new ListView(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, theQ.items){
@@ -109,6 +124,41 @@ public class Question extends ActionBarActivity {
             }
         });
         layout.addView(itemList, 2, new LinearLayout.LayoutParams(MP, WC));
+    }
+
+    public void makeSeek(SearchTheQuestion theQ){
+        LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
+        final MySeekBar mySeek = new MySeekBar(this);
+        mySeek.init(this, theQ.qMin, theQ.qMax);
+        SeekBar seekBar = mySeek.returnSeekObject(this);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                answer = Integer.toString(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                seekBar.getThumb().setAlpha(0);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        layout.addView(mySeek, 2, new LinearLayout.LayoutParams(MP, WC));
+    }
+    public void makeTimePicker(){
+        LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
+        TimePicker timePicker = new TimePicker(this);
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                answer = hourOfDay + ":" + minute;
+            }
+        });
+        layout.addView(timePicker, 2, new LinearLayout.LayoutParams(MP, WC));
     }
 
     public void btnNext_onClick(View view){

@@ -6,4 +6,6 @@
     <string name="receive_intent_err">Failed to receive previous data.</string>
     <string name="error">Error</string>
     <string name="next">Next</string>
+    <string name="seek_end">seek end</string>
+    <string name="time_pick">Input time</string>
 </resources>
