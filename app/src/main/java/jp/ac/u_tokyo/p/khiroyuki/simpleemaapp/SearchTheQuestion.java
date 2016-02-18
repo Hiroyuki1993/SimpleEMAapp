@@ -26,11 +26,14 @@ public class SearchTheQuestion extends DatabaseHelper{
         String[] cols = {"_id","hq", "QType", "QDesc", "QMax", "QMin"};
         String[] params = {Integer.toString(parentId)};
         Cursor cs = db.query("Questions", cols, "parent=?", params, null, null, "QOrder ASC", null);
+        if(index >= cs.getCount()){
+            endOfQuestion = true;
+            return false;
+        }
 
         if(cs.moveToFirst()){
             for (int i=0; i<index;i++){
                 if (cs.isLast()){
-                    endOfQuestion = true;
                     return false;
                 }
                 cs.moveToNext();

@@ -22,4 +22,5 @@
     <string name="Yes">Yes</string>
     <string name="Cancel">Cancel</string>
     <string name="read_success">Your inquiry file has been successfully loaded!</string>
+    <string name="notice">Notice</string>
 </resources>

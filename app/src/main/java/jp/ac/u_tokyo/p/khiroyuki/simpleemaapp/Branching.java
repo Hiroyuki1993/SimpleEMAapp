@@ -1,6 +1,7 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,12 +15,6 @@ import java.util.ArrayList;
 
 
 public class Branching extends CommonActivity {
-    private static String BUTTON_ID;
-
-    static {
-        BUTTON_ID = "ButtonId_";
-    }
-
     private String errMsg;
     private ArrayList<Integer> buttonId = new ArrayList<>();
     @Override
@@ -31,9 +26,14 @@ public class Branching extends CommonActivity {
         txt.setTextSize(DynamicTextSize.dynamicTextSizeChange(getApplicationContext()));
         if (!makeBranchButton()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.warning).setMessage(errMsg).show();
-            Intent i = new Intent(this, Top.class);
-            startActivity(i);
+            builder.setTitle(R.string.warning).setMessage(errMsg)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i = new Intent(getApplicationContext(), Top.class);
+                            startActivity(i);
+                        }
+                    }).show();
         }
     }
 
@@ -62,20 +62,27 @@ public class Branching extends CommonActivity {
     public boolean makeBranchButton(){
         DatabaseHelper helper = new DatabaseHelper(this);
         LinearLayout ll = (LinearLayout)findViewById(R.id.linear_branch);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        layoutParams.setMargins(0, 20, 0, 0);
+
         if(!helper.getRootItems(this)){
             errMsg = helper.errMsg;
             return false;
         }
-        for (int i = 0; i < helper.returnRootItem().length; i++){
-            String[] rootItem = helper.returnRootItem();
-            Integer[] rootId = helper.returnRootId();
-            buttonId.add(getResources().getIdentifier(BUTTON_ID + rootItem[i], "id", "jp.ac.u_tokyo.p.k_hiroyuki.simpleemaapp"));
+        String[] rootItem = helper.returnRootItem();
+        Integer[] rootId = helper.returnRootId();
+        for (int i = 0; i < helper.returnRootItem().length; i++) {
+            buttonId.add(View.generateViewId());
             Button bt = new Button(this);
             bt.setId(buttonId.get(buttonId.size()-1));
             bt.setText(rootItem[i]);
             bt.setTextSize(DynamicTextSize.dynamicTextSizeChange(this));
-            bt.setTag(rootId[i]);
-            ll.addView(bt);
+            bt.setTag(R.string.rootIdTag, rootId[i]);
+            bt.setTag(R.string.rootItemTag, rootItem[i]);
+            bt.setBackground(getResources().getDrawable(R.drawable.custom_button));
+            ll.addView(bt, layoutParams);
             findViewById(buttonId.get(buttonId.size()-1)).setOnClickListener(mOnClickListener);
         }
         return true;
@@ -86,8 +93,11 @@ public class Branching extends CommonActivity {
         public void onClick(View v) {
             for(int id:buttonId){
                 if(v.getId() == id){
+                    SaveAnswer sa = new SaveAnswer(getApplicationContext());
+                    int trialId = sa.AddNewTrial(v.getTag(R.string.rootItemTag).toString());
                     Intent i = new Intent(getApplicationContext(), Question.class);
-                    i.putExtra("questionType", Integer.parseInt(v.getTag().toString()));
+                    i.putExtra("questionType", Integer.parseInt(v.getTag(R.string.rootIdTag).toString()));
+                    i.putExtra("trialId", trialId);
                     int index = 0;
                     i.putExtra("questionIndex", index);
                     startActivity(i);

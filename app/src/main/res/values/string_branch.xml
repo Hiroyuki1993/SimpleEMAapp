@@ -2,4 +2,7 @@
 <resources>
     <string name="branch_title">Chose inquiry type</string>
     <string name="no_root_err">There are any root items in the inquiry.\nPlease load a inquiry file correctly.</string>
+    <string name="rootIdTag">rootId</string>
+    <string name="rootItemTag">rootItem</string>
+    <string name="ok">OK</string>
 </resources>

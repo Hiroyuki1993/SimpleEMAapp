@@ -119,10 +119,12 @@ public class ReadInquiryFile extends CommonActivity {
         helper.initTable();
         if(!helper.WriteInq(data, this)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(helper.errMsg).setMessage(helper.errMsg).show();
+            builder.setTitle(R.string.error).setMessage(helper.errMsg).show();
             return;
         }
         AlertDialog.Builder success_loaded = new AlertDialog.Builder(this);
-        success_loaded.setTitle(R.string.read_success).setMessage(R.string.read_success);
+        success_loaded.setTitle(R.string.notice)
+                .setMessage(R.string.read_success)
+        .show();
     }
 }

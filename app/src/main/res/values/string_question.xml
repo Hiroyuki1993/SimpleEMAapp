@@ -8,4 +8,5 @@
     <string name="next">Next</string>
     <string name="seek_end">seek end</string>
     <string name="time_pick">Input time</string>
+    <string name="empty_answer">You have not answered to this question.</string>
 </resources>

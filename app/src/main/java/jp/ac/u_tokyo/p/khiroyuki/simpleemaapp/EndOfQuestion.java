@@ -1,16 +1,18 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.os.Handler;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class EndOfQuestion extends ActionBarActivity {
-
+public class EndOfQuestion extends CommonActivity {
+    Handler endHandler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_of_question);
+        endHandler.postDelayed(finishTask, 3000);
     }
 
     @Override
@@ -34,4 +36,12 @@ public class EndOfQuestion extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private final Runnable finishTask = new Runnable() {
+        @Override
+        public void run() {
+            Intent intent = new Intent(getApplication(), Top.class);
+            startActivity(intent);
+        }
+    };
 }
