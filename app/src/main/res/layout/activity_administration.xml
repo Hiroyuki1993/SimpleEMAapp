@@ -17,7 +17,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/export_file"/>
+        android:text="@string/export_file"
+        android:onClick="export_answer_onClick"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

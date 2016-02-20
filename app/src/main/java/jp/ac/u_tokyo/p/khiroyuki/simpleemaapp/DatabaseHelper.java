@@ -31,9 +31,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE Questions (_id INTEGER PRIMARY KEY AUTOINCREMENT, parent INTEGER NOT NULL, hq TEXT NULL, QType INTEGER NOT NULL, QOrder INTEGER NOT NULL, QDesc TEXT, QMax TEXT, QMin TEXT, itemId TEXT)");
         db.execSQL("CREATE TABLE Items (_id INTEGER PRIMARY KEY AUTOINCREMENT, questionId INTEGER NOT NULL, itemName TEXT NOT NULL)");
         db.execSQL("CREATE TABLE Types (_id INTEGER PRIMARY KEY AUTOINCREMENT, TType TEXT NOT NULL)");
-        db.execSQL("CREATE TABLE Trials (_id INTEGER PRIMARY KEY AUTOINCREMENT, QType TEXT, QTime DATETIME DEFAULT CURRENT_TIMESTAMP)");
-        db.execSQL("CREATE TABLE Answers (_id INTEGER PRIMARY KEY AUTOINCREMENT, trialId INTEGER NOT NULL, question TEXT, answer TEXT, answeredTime DATETIME DEFAULT CURRENT_TIMESTAMP)");
-        //TIME STAMP is UTC. Please convert localtime when you use this time.
+        db.execSQL("CREATE TABLE Trials (_id INTEGER PRIMARY KEY AUTOINCREMENT, QType TEXT, QTime DATETIME)");
+        db.execSQL("CREATE TABLE Answers (_id INTEGER PRIMARY KEY AUTOINCREMENT, trialId INTEGER NOT NULL, question TEXT, answer TEXT, answeredTime DATETIME)");
         db.execSQL("INSERT INTO Types (TType) VALUES ('radio')");
         db.execSQL("INSERT INTO Types (TType) VALUES ('seek')");
         db.execSQL("INSERT INTO Types (TType) VALUES ('time')");

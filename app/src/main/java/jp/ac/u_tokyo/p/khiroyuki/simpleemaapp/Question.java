@@ -191,7 +191,7 @@ public class Question extends CommonActivity {
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                answer = hourOfDay + ":" + minute;
+                answer = String.format("%2d:%2d", hourOfDay, minute);
             }
         });
         layout.addView(timePicker, 2, layoutParams);

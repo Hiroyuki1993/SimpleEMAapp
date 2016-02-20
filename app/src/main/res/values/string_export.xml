@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_export">Export subject\'s answers</string>
+    <string name="chose_folder">Chose folder</string>
+    <string name="folder_path">Folder path:</string>
+    <string name="export_button">Export</string>
+    <string name="read_trial_err">An error has occurred when reading trial table!\nMaybe there is any answer data.</string>
+    <string name="read_ans_err">An error has occurred when reading answer table!</string>
+    <string name="write_csv_success">A csv file has created successfully</string>
+    <string name="empty_folder_path">Folder path is empty!</string>
+</resources>

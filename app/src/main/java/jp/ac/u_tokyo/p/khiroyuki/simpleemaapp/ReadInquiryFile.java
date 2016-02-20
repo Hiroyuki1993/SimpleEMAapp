@@ -78,12 +78,6 @@ public class ReadInquiryFile extends CommonActivity {
                 text.setText("file path:" + fpath);
             }
         });
-        //fileDialog.addDirectoryListener(new FileDialog.DirectorySelectedListener() {
-            //public void directorySelected(File directory) {
-                //(getClass().getName(), "selected dir " + directory.toString());
-            //}
-        //});
-        //fileDialog.setSelectDirectoryOption(false);
         fileDialog.showDialog();
     }
 

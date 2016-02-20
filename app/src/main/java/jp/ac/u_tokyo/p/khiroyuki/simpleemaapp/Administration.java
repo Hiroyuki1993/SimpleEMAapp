@@ -47,4 +47,8 @@ public class Administration extends CommonActivity {
         Intent i = new Intent(this, Top.class);
         startActivity(i);
     }
+    public void export_answer_onClick(View v){
+        Intent i = new Intent(this, ExportAnswers.class);
+        startActivity(i);
+    }
 }
