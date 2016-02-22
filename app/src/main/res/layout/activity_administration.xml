@@ -8,30 +8,43 @@
     android:orientation="vertical">
 
     <TextView android:text="@string/admin_title" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:textSize="20sp"/>
-    <Button
+        android:layout_height="wrap_content" android:textSize="20sp"
+        android:layout_weight="1"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/import_file"
-        android:onClick="read_file_onClick"/>
-    <Button
+        android:orientation="vertical"
+        android:layout_weight="6">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/import_file"
+            android:onClick="read_file_onClick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/export_file"
+            android:onClick="export_answer_onClick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_alarm"
+            android:onClick="set_alarm_onClick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/env_settings"
+            android:onClick="change_text_onClick"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/export_file"
-        android:onClick="export_answer_onClick"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/set_alarm"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/env_settings"
-        android:onClick="change_text_onClick"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reflect"
-        android:onClick="reflect_onClick"/>
-
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reflect"
+            android:onClick="reflect_onClick"/>
+    </LinearLayout>
 </LinearLayout>

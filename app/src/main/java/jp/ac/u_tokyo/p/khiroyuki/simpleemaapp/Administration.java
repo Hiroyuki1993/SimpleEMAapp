@@ -51,4 +51,8 @@ public class Administration extends CommonActivity {
         Intent i = new Intent(this, ExportAnswers.class);
         startActivity(i);
     }
+    public void set_alarm_onClick(View v){
+        Intent i = new Intent(this, SettingAlarm.class);
+        startActivity(i);
+    }
 }
