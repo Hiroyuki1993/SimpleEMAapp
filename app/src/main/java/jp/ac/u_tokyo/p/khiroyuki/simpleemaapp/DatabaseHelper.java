@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE Types (_id INTEGER PRIMARY KEY AUTOINCREMENT, TType TEXT NOT NULL)");
         db.execSQL("CREATE TABLE Trials (_id INTEGER PRIMARY KEY AUTOINCREMENT, QType TEXT, QTime DATETIME)");
         db.execSQL("CREATE TABLE Answers (_id INTEGER PRIMARY KEY AUTOINCREMENT, trialId INTEGER NOT NULL, question TEXT, answer TEXT, answeredTime DATETIME)");
-        db.execSQL("CREATE TABLE AlarmList (_id INTEGER PRIMARY KEY AUTOINCREMENT, hour INTEGER, minute INTEGER, status INTEGER)");
+        db.execSQL("CREATE TABLE AlarmList (_id INTEGER PRIMARY KEY AUTOINCREMENT, hour INTEGER, minute INTEGER)");
         db.execSQL("INSERT INTO Types (TType) VALUES ('radio')");
         db.execSQL("INSERT INTO Types (TType) VALUES ('seek')");
         db.execSQL("INSERT INTO Types (TType) VALUES ('time')");

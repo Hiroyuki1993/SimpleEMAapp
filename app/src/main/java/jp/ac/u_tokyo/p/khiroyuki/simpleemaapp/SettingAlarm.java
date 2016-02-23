@@ -1,6 +1,8 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
@@ -20,13 +23,34 @@ public class SettingAlarm extends CommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_alarm);
         ListView alarmListView = (ListView)findViewById(R.id.alarm_listView);
-        AddAlarmList aal = new AddAlarmList(this);
-        ArrayList<String> alarmList = aal.searchAlarms();
-        ArrayAdapter<String> alarmAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alarmList);
-        alarmListView.setAdapter(alarmAdapter);
+        AlarmListDBHelper AListHelper = new AlarmListDBHelper(this);
+        ArrayList<String> alarmList = AListHelper.searchAlarms();
+        if(alarmList != null){
+            ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alarmList);
+            alarmListView.setAdapter(alarmAdapter);
+        }
         alarmListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final String timeText = ((TextView)view).getText().toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                builder.setTitle(R.string.warning)
+                        .setMessage(R.string.remove_alarm)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                CheckInAlarm cia = new CheckInAlarm();
+                                cia.removeAlarm(getApplicationContext(), timeText);
+                                updateAlarmList();
+                            }
+                        })
+                        .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
                 return false;
             }
         });
@@ -59,10 +83,26 @@ public class SettingAlarm extends CommonActivity {
         TimePickerDialog t_time = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                CheckInAlarm cia = new CheckInAlarm(getApplicationContext(), hourOfDay, minute);
+                CheckInAlarm cia = new CheckInAlarm();
+                if(!cia.checkInAlarm(getApplicationContext(), hourOfDay, minute)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingAlarm.this);
+                    builder.setTitle(R.string.warning)
+                            .setMessage(R.string.redundant_alarm)
+                            .show();
+                    return;
+                }
+                updateAlarmList();
             }
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true // initial hour and minute
         );
         t_time.show();
+    }
+
+    private void updateAlarmList(){
+        ListView alarmListView = (ListView)findViewById(R.id.alarm_listView);
+        AlarmListDBHelper AListHelper = new AlarmListDBHelper(this);
+        ArrayList<String> alarmList = AListHelper.searchAlarms();
+        ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alarmList);
+        alarmListView.setAdapter(alarmAdapter);
     }
 }

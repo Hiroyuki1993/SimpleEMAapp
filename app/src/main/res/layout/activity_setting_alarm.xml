@@ -15,11 +15,11 @@
         android:id="@+id/alarm_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="8"></ListView>
+        android:layout_weight="6"/>
     <Button
         android:text="@string/add_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:onClick="btn_addAlarm_onClick"/>
 </LinearLayout>
