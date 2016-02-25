@@ -7,19 +7,20 @@
     tools:context="jp.ac.u_tokyo.p.khiroyuki.simpleemaapp.SettingAlarm"
     android:orientation="vertical">
 
-    <TextView android:text="@string/alarm_list" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView android:text="@string/alarm_list" android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:textSize="20sp"
-        android:layout_weight="2"/>
+        android:layout_weight="1"/>
     <ListView
         android:id="@+id/alarm_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"/>
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:paddingBottom="10dp"/>
     <Button
         android:text="@string/add_alarm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:onClick="btn_addAlarm_onClick"/>
 </LinearLayout>

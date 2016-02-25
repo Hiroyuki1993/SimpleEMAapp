@@ -9,17 +9,17 @@
     tools:context="jp.ac.u_tokyo.p.khiroyuki.simpleemaapp.Question">
 
     <TextView android:text="@string/hello_world" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/hq" android:gravity="center_horizontal"
+        android:layout_height="0dp" android:id="@+id/hq" android:gravity="center_horizontal"
         android:layout_weight="2"/>
     <TextView
         android:id="@+id/desc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="2"/>
     <Button
         android:id="@+id/nextButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/next"
         android:onClick="btnNext_onClick"
         android:layout_weight="1"/>

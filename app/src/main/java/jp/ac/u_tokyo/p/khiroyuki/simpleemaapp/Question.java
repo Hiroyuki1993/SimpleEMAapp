@@ -127,7 +127,7 @@ public class Question extends CommonActivity {
     public void makeRadio(SearchTheQuestion theQ){
         LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, 0);
         layoutParams.weight = 5;
 
 

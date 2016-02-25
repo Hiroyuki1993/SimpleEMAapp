@@ -68,10 +68,11 @@ public class AlarmListDBHelper extends DatabaseHelper{
         return alarmId;
     }
 
-    public void removeAlarm(int targetId){
+    public boolean removeAlarm(int targetId){
         SQLiteDatabase wdb = getWritableDatabase();
         String[] params = {Integer.toString(targetId)};
-        wdb.delete("AlarmList", "_id = ?", params);
+        int isSuccess = wdb.delete("AlarmList", "_id = ?", params);
+        return (isSuccess != 0);
     }
 
     private String timeFormat(int hour, int minute){

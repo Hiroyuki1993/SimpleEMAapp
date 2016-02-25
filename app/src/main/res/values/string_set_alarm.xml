@@ -4,4 +4,8 @@
     <string name="add_alarm">Add alarm</string>
     <string name="redundant_alarm">Alarm is already set on the same time.</string>
     <string name="remove_alarm">Do you remove this alarm?</string>
+    <string name="alarm_set_done">Your alarm is set for sure.</string>
+    <string name="alarm_delete_done">This alarm is removed for sure.</string>
+    <string name="alarm_delete_error">Failed to delete this alarm!</string>
+    <string name="notification_ticker">It is time to inquiry.</string>
 </resources>

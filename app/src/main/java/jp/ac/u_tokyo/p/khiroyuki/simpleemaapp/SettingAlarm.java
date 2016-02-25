@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,38 +23,7 @@ public class SettingAlarm extends CommonActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_alarm);
-        ListView alarmListView = (ListView)findViewById(R.id.alarm_listView);
-        AlarmListDBHelper AListHelper = new AlarmListDBHelper(this);
-        ArrayList<String> alarmList = AListHelper.searchAlarms();
-        if(alarmList != null){
-            ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alarmList);
-            alarmListView.setAdapter(alarmAdapter);
-        }
-        alarmListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final String timeText = ((TextView)view).getText().toString();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                builder.setTitle(R.string.warning)
-                        .setMessage(R.string.remove_alarm)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                CheckInAlarm cia = new CheckInAlarm();
-                                cia.removeAlarm(getApplicationContext(), timeText);
-                                updateAlarmList();
-                            }
-                        })
-                        .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-                        .show();
-                return false;
-            }
-        });
+        updateAlarmList();
     }
 
     @Override
@@ -83,15 +53,20 @@ public class SettingAlarm extends CommonActivity {
         TimePickerDialog t_time = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                CheckInAlarm cia = new CheckInAlarm();
-                if(!cia.checkInAlarm(getApplicationContext(), hourOfDay, minute)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingAlarm.this);
-                    builder.setTitle(R.string.warning)
-                            .setMessage(R.string.redundant_alarm)
-                            .show();
-                    return;
+                if(view.isShown()) {
+                    CheckInAlarm cia = new CheckInAlarm();
+                    if (!cia.checkInAlarm(getApplicationContext(), hourOfDay, minute)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SettingAlarm.this);
+                        builder.setTitle(R.string.warning)
+                                .setMessage(R.string.redundant_alarm)
+                                .show();
+                        return;
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.alarm_set_done, Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    updateAlarmList();
                 }
-                updateAlarmList();
             }
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true // initial hour and minute
         );
@@ -102,7 +77,41 @@ public class SettingAlarm extends CommonActivity {
         ListView alarmListView = (ListView)findViewById(R.id.alarm_listView);
         AlarmListDBHelper AListHelper = new AlarmListDBHelper(this);
         ArrayList<String> alarmList = AListHelper.searchAlarms();
+        if(alarmList==null) return;
         ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alarmList);
         alarmListView.setAdapter(alarmAdapter);
+        alarmListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final String timeText = ((TextView) view).getText().toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(SettingAlarm.this);
+                builder.setTitle(R.string.warning)
+                        .setMessage(R.string.remove_alarm)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                CheckInAlarm cia = new CheckInAlarm();
+                                if(cia.removeAlarm(getApplicationContext(), timeText)){
+                                    Toast toast = Toast.makeText(getApplicationContext(), R.string.alarm_delete_done, Toast.LENGTH_LONG);
+                                    toast.show();
+                                    updateAlarmList();
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                                    builder.setTitle(R.string.error)
+                                            .setMessage(R.string.alarm_delete_error)
+                                            .show();
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
+                return false;
+            }
+        });
     }
 }
