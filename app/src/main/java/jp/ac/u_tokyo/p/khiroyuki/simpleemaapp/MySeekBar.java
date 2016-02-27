@@ -1,10 +1,6 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -26,10 +22,5 @@ public class MySeekBar extends RelativeLayout {
         seekbar.getThumb().setAlpha(0);
         seekMin.setText(qMin);
         seekMax.setText(qMax);
-    }
-
-    public SeekBar returnSeekObject(Context context) {
-        View layout = LayoutInflater.from(context).inflate(R.layout.my_seek_bar, this);
-        return (SeekBar)layout.findViewById(R.id.seek);
     }
 }

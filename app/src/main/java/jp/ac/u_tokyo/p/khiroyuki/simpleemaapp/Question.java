@@ -154,16 +154,17 @@ public class Question extends CommonActivity {
     public void makeSeek(SearchTheQuestion theQ){
         LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, 0);
         layoutParams.weight = 5;
         final MySeekBar mySeek = new MySeekBar(this);
         mySeek.init(this, theQ.qMin.replace("\\n", "\n"), theQ.qMax.replace("\\n", "\n"));
         SeekBar seekBar = (SeekBar)mySeek.findViewById(R.id.seek);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             Boolean isSeekChanged = false;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(!isSeekChanged) {
+                if (!isSeekChanged) {
                     seekBar.getThumb().setAlpha(255);
                     isSeekChanged = true;
                 }
@@ -185,13 +186,13 @@ public class Question extends CommonActivity {
     public void makeTimePicker(){
         LinearLayout layout = (LinearLayout)findViewById(R.id.linear_question);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, 0);
         layoutParams.weight = 5;
         TimePicker timePicker = new TimePicker(this);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                answer = String.format("%2d:%2d", hourOfDay, minute);
+                answer = timeFormat(hourOfDay, minute);
             }
         });
         layout.addView(timePicker, 2, layoutParams);
@@ -218,5 +219,21 @@ public class Question extends CommonActivity {
             intent.putExtra("questionIndex", index);
             startActivity(intent);
         }
+    }
+
+    private String timeFormat(int hour, int minute){
+        String txtHour;
+        String txtMinute;
+        if(hour < 10){
+            txtHour = "0"+hour;
+        } else {
+            txtHour = Integer.toString(hour);
+        }
+        if(minute < 10){
+            txtMinute = "0"+minute;
+        } else {
+            txtMinute = Integer.toString(minute);
+        }
+        return txtHour+":"+txtMinute;
     }
 }

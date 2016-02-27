@@ -13,10 +13,12 @@ public class AlarmReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent){
         this.context = context;
+        int requestCode = intent.getIntExtra("requestCode", 0);
         Intent intent_branch = new Intent(context, Branching.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent_branch, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent_branch, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker(context.getResources().getString(R.string.notification_ticker))
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(context.getResources().getString(R.string.app_name))

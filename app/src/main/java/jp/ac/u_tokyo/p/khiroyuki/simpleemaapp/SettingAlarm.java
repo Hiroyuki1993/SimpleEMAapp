@@ -77,7 +77,14 @@ public class SettingAlarm extends CommonActivity {
         ListView alarmListView = (ListView)findViewById(R.id.alarm_listView);
         AlarmListDBHelper AListHelper = new AlarmListDBHelper(this);
         ArrayList<String> alarmList = AListHelper.searchAlarms();
-        if(alarmList==null) return;
+        if(alarmList==null) {
+            @SuppressWarnings("unchecked")
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>)alarmListView.getAdapter();
+            if(adapter != null){
+                adapter.clear();
+            }
+            return;
+        }
         ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alarmList);
         alarmListView.setAdapter(alarmAdapter);
         alarmListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class CheckInAlarm {
     public CheckInAlarm(){
@@ -20,11 +19,11 @@ public class CheckInAlarm {
             return false;
         }
         Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra("requestCode", id);
         PendingIntent sender = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = convertUTC(hour, minute);
-        Date a =calendar.getTime();
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 5000, sender);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, sender);
         return true;
     }
 
@@ -33,18 +32,18 @@ public class CheckInAlarm {
         AlarmListDBHelper aListHelper = new AlarmListDBHelper(context);
         int targetId = aListHelper.searchFromHourMinute(time[0], time[1]);
         boolean isSuccess = aListHelper.removeAlarm(targetId);
-        /*Intent intent = new Intent(context, AlarmReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, targetId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        am.cancel(sender);*/
+        am.cancel(sender);
         return isSuccess;
     }
 
     private Calendar convertUTC(int hour, int minute){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        //calendar.set(Calendar.HOUR_OF_DAY, hour);
-        //calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
         return calendar;
     }
 

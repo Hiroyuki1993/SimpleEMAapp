@@ -10,15 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class PasswordDialog extends Dialog{
-    //set your password
-    private String correctPass = "simple";
-//Constructor
     public PasswordDialog(Context context) {
         super(context);
         this.setContentView(R.layout.dialog_password);
     }
 
     void setPasswordDialog(final Activity a, final Context context, final Class c){
+        final String correctPass = context.getResources().getString(R.string.admin_password);
         final EditText txtPass = (EditText)this.findViewById(R.id.password);
         final TextView txtMsg = (TextView)this.findViewById(R.id.txtMsg);
         Button btnOK = (Button)this.findViewById(R.id.OK_btn);

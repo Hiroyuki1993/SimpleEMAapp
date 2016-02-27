@@ -36,14 +36,14 @@ public class ReadXMLFile {
             XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
             XmlPullParser myparser = xmlFactoryObject.newPullParser();
             myparser.setInput(stream, "utf-8");
+            int itemId = 0;
             for(int e = myparser.getEventType(); e != XmlPullParser.END_DOCUMENT; e = myparser.next()){
                 if(e == XmlPullParser.START_TAG && myparser.getName().equals("root")){
                     roots.add(myparser.nextText());
                 }
                 if(e == XmlPullParser.START_TAG && myparser.getName().equals("question")){
-                    String itemId = myparser.getAttributeValue(null,"id");
                     HashMap<String,String> question = new HashMap<String,String>(){
-                        {put("id","");}
+                        {put("itemId","");}
                         {put("hq","");}
                         {put("type", "");}
                         {put("order","");}
@@ -51,7 +51,7 @@ public class ReadXMLFile {
                         {put("min","");}
                         {put("max","");}
                     };
-                    question.put("id", itemId);
+                    question.put("itemId", Integer.toString(itemId));
                     for(e = myparser.getEventType();
                         e != XmlPullParser.END_TAG || !myparser.getName().equals("question");
                         e = myparser.next()){
@@ -76,7 +76,7 @@ public class ReadXMLFile {
                                     }
                                     if (e == XmlPullParser.START_TAG && myparser.getName().equals("item")){
                                         String[] item = new String[2];
-                                        item[0] = itemId;
+                                        item[0] = Integer.toString(itemId);
                                         item[1] = myparser.nextText();
                                         items.add(item.clone());
                                     }
@@ -85,6 +85,7 @@ public class ReadXMLFile {
                         }
                     }
                     questions.add(question);
+                    itemId++;
                 }
             }
         } catch (XmlPullParserException | IOException e) {
@@ -136,13 +137,6 @@ public class ReadXMLFile {
             errType = 1;
         } else {
             for(HashMap q:questions){
-                if(!q.containsKey("id")){
-                    errType=2;
-                    break;
-                } else if (q.get("id").toString().isEmpty()){
-                    errType=3;
-                    break;
-                }
                 if(!q.containsKey("hq")){
                     errType=7;
                     break;
@@ -168,15 +162,6 @@ public class ReadXMLFile {
                     errType=5;
                     break;
                 }
-                /*if (q.get("type").toString().equals("radio")){
-                    if(!items.containsKey(q.get("id"))){
-                        errType=6;
-                        break;
-                    } else if (items.get(q.get("id")).isEmpty()){
-                        errType=6;
-                        break;
-                    }
-                }*/
             }
         }
 
