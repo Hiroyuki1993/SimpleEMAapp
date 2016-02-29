@@ -22,7 +22,7 @@ Simple EMA app require a inquiry file written as xml format. Sample inquiry file
 
 2. Login as administrator
 Launch the app and goto the top scene then tap the setting button. Initial password is 'simple'.
-(You can set your own password by modifying "string_passwordDialog.xml")
+(You can set your own password by modifying "string_password.xml")
 <img src="./demoImages/top.png" width=200 align="left"/>
 <BR clear="left">
 3. Import your inquiry
