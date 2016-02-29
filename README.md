@@ -22,9 +22,9 @@ Simple EMA app require a inquiry file written as xml format. Sample inquiry file
 
 2. Login as administrator
 Launch the app and goto the top scene then tap the setting button. Initial password is 'simple'.
-(You can set your own password by modifing "string_passwordDialog.xml")
+(You can set your own password by modifying "string_passwordDialog.xml")
 <img src="./demoImages/top.png" width=200 align="left"/>
-
+<BR clear="left">
 3. Import your inquiry
 Push 'import inquiry file' button. You will visit read inquiry scene. After selecting your inquiry file that you have written, tap 'import this file' button.
 
@@ -32,5 +32,7 @@ Push 'import inquiry file' button. You will visit read inquiry scene. After sele
 Back to previous administration page. You can set/remove alarms or change text size. Finally you should make sure that your questions are properly set.
 
 ##Install
+Import this project on android studio and make a apk file. I am preparring a web site for contributing the apk file.
 
 ##Lisence
+The MIT License (MIT)
