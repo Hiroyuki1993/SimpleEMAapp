@@ -40,7 +40,7 @@ Push 'import inquiry file' button. You will visit read inquiry scene. After sele
 Back to previous administration page. You can set/remove alarms or change text size. Finally you should make sure that your questions are properly set.
 
 ##Install
-Import this project on android studio and make a apk file. I am preparring a web site for contributing the apk file.
+Download the apk file on [my personal web site](hkuromiya.nagoya/2016/03/19/simpleemaapp/). Move it to your android phone, and tap it via file manager.
 
 ##Lisence
 The MIT License (MIT)
