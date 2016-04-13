@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inquiry>
+<roots>
+	<root>Morning</root>
+	<root>Noon</root>
+	<root>Night</root>
+	<root>Mid Night</root>
+</roots>
+<questions>
+	<question>
+		<parent>Morning</parent><!--Plase set the same word as you wrote in the root tag-->
+		<hq>How are you?</hq><!--'hq' means title of question-->
+		<type>radio</type><!--3 types ('radio', 'seek', 'time') are available-->
+		<order>1</order>
+		<desc>Chose one</desc>
+		<min></min>
+		<max></max>
+		<items><!--Items tag is required in radio type question-->
+			<item>fine</item>
+			<item>not bad</item>
+			<item>sleepy</item>
+			<item>headache</item>
+		</items>
+	</question>
+	<question>
+		<parent>Morning</parent>
+		<hq>What time did you get up?</hq>
+		<type>time</type>
+		<order>2</order>
+		<desc>Chose time\nUse time picker below.</desc><!--You can express linebreak as '\n'-->
+		<min></min>
+		<max></max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Morning</parent>
+		<hq>Sleepness</hq>
+		<type>seek</type>
+		<order>3</order>
+		<desc>Please tap a bar</desc>
+		<min>Sleepy</min><!--You can modify the text below the seek bar-->
+		<max>Not sleepy</max>
+		<items></items>
+	</question>
+
+	<question>
+		<parent>Noon</parent>
+		<hq>Sleepness</hq>
+		<type>seek</type>
+		<order>1</order>
+		<desc>Please tap bar</desc>
+		<min>Sleepy</min>
+		<max>Not sleepy</max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Noon</parent>
+		<hq>Tiredness</hq>
+		<type>seek</type>
+		<order>2</order>
+		<desc>Please tap bar</desc>
+		<min>Very tired</min>
+		<max>Powerful</max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Noon</parent>
+		<hq>Sadness</hq>
+		<type>seek</type>
+		<order>3</order>
+		<desc>100:very sad\n0:very happy</desc>
+		<min>0</min>
+		<max>100</max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Noon</parent>
+		<hq>What did you eat?</hq>
+		<type>radio</type>
+		<order>4</order>
+		<desc>Please select.</desc>
+		<min></min>
+		<max></max>
+		<items>
+			<item>Hamburger</item>
+			<item>Pizza</item>
+			<item>Steak</item>
+			<item>Others</item>
+		</items>
+	</question>
+
+	<question>
+		<parent>Night</parent>
+		<hq>Sleepness</hq>
+		<type>seek</type>
+		<order>1</order>
+		<desc>100:very sleepy\n0:very active</desc>
+		<min>0</min>
+		<max>100</max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Night</parent>
+		<hq>When did you eat dinner?</hq>
+		<type>time</type>
+		<order>2</order>
+		<desc></desc>
+		<min></min>
+		<max></max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Night</parent>
+		<hq>Who made your dinner?</hq>
+		<type>radio</type>
+		<order>3</order>
+		<desc></desc>
+		<min></min>
+		<max></max>
+		<items>
+			<item>Cheff</item>
+			<item>Mother</item>
+			<item>Wife</item>
+			<item>Myself</item>
+		</items>
+	</question>
+
+	<question>
+		<parent>Mid Night</parent>
+		<hq>Are you hangry?</hq>
+		<type>seek</type>
+		<order>1</order>
+		<desc></desc>
+		<min>0</min>
+		<max>100</max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Mid Night</parent>
+		<hq>Are you sleepy?</hq>
+		<type>seek</type>
+		<order>2</order>
+		<desc></desc>
+		<min>0</min>
+		<max>100</max>
+		<items></items>
+	</question>
+	<question>
+		<parent>Mid Night</parent>
+		<hq>What time will you go to bed?</hq>
+		<type>time</type>
+		<order>3</order>
+		<desc>Answer your will</desc>
+		<min></min>
+		<max></max>
+		<items></items>
+	</question>
+</questions>
+</inquiry>
