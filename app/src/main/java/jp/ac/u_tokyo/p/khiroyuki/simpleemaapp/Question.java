@@ -1,6 +1,7 @@
 package jp.ac.u_tokyo.p.khiroyuki.simpleemaapp;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -188,14 +189,26 @@ public class Question extends CommonActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0);
         layoutParams.weight = 5;
-        TimePicker timePicker = new TimePicker(this);
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+        Button timeSelectBtn = new Button(this);
+        timeSelectBtn.setText(R.string.timeSelectBtn);
+        timeSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                answer = timeFormat(hourOfDay, minute);
+            public void onClick(View v) {
+                showTimePickerDialog();
             }
         });
-        layout.addView(timePicker, 2, layoutParams);
+        layout.addView(timeSelectBtn, 2, layoutParams);
+    }
+
+    public void showTimePickerDialog(){
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        answer = timeFormat(hourOfDay, minute);
+                    }
+                }, 0, 0, true);
+        timePickerDialog.show();
     }
 
     public void btnNext_onClick(View view){
